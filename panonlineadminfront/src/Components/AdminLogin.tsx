@@ -3,7 +3,7 @@ import { Form, InputGroup, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
-import './AdminLogin.css'
+import './panAdmin.css'
 import './HomePage.css'
 
 export interface IAdmin 
@@ -24,16 +24,15 @@ export function LoginAdmin(properties: any) : any
         <div className="BackGround">
         <Form onSubmit={(e) => {
             e.preventDefault();
-            axios.post(`http://localhost:8080/api/Login/adminLogin`, {username, password})
+            axios.post(`http://localhost:8080/login/admin`, {username, password})
                 .then(res => {
-                    setAdmin(res.data)
-                    properties.GetAdminData(Admin)
-                    console.log(res.data)
-                    console.log(Admin)  
-                    
+                    if(res.data!==0){
+                    localStorage.setItem("adminid",res.data)
+                    window.location.href = 'http://localhost:3000/Management'
+                    }
                 })}}>
 
-            <div className="Adminbox">
+            <div className="Userbox">
                 <Form.Group >
                     <div className="padding" >
                         <Form.Label>
@@ -48,7 +47,7 @@ export function LoginAdmin(properties: any) : any
                                     <Form.Control
                                         type="text"
                                         id= "Username"
-                                        className="textbox"
+                                        className="username"
                                         value={username}
                                         onChange={(e) => {
                                             setUsername(e.target.value)
@@ -67,7 +66,7 @@ export function LoginAdmin(properties: any) : any
                             <Form.Control
                                 type="password"
                                 id= "Password"
-                                className="textbox"
+                                className="password"
                                 value={password}
                                 onChange={(e) => {
                                     setPassword(e.target.value)
@@ -78,7 +77,7 @@ export function LoginAdmin(properties: any) : any
                     </div>
                     <div className="linebottom"></div>
                     <div className="padding">
-                     <Button className="loginButton" type="submit">Login admin</Button>
+                     <Button className="loginButton" type="submit">Log-in</Button>
                     </div>         
                     </div>
                 </Form.Group>
